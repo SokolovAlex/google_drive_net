@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dto.Models;
-using Google.Apis.Drive.v3.Data;
+using Google.Apis.Drive.v2.Data;
 
 namespace GDriveApi.Mappers
 {
@@ -14,7 +14,7 @@ namespace GDriveApi.Mappers
         {
             return new FileModel
             {
-                Name = file.Name,
+                Name = file.Title,
                 Id = file.Id,
                 IconLink = file.IconLink,
                 FileExtension = file.FileExtension,
@@ -27,7 +27,7 @@ namespace GDriveApi.Mappers
         {
             return new FolderModel
             {
-                Name = file.Name,
+                Name = file.Title,
                 IconLink = file.IconLink,
                 FileExtension = file.FileExtension,
                 Shared = file.Shared,

@@ -5,9 +5,7 @@
          function ($scope, fileService) {
              var ctrl = this;
              ctrl.files = [];
-             debugger;
              fileService.getFiles().then(function (response) {
-                 debugger;
                  ctrl.files = response.data;
              });
          }]);

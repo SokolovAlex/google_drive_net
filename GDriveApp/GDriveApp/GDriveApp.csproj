@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Upload\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CurrentUser.cs" />
     <Compile Include="Models\LevelView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -134,10 +136,12 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\app\config.js" />
+    <Content Include="Scripts\libs\angular-upload-file.js" />
+    <Content Include="Scripts\libs\angular.js" />
     <Content Include="Scripts\app\fileService.js" />
     <Content Include="Scripts\app\main.js" />
-    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\libs\bootstrap.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -882,7 +886,7 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\libs\jquery-1.10.2.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -920,9 +924,19 @@
       <Project>{8a80e767-c156-4add-aea2-7f3c8a37ab7f}</Project>
       <Name>GDriveApi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GDriveApi_v2\GDriveApi_v2.csproj">
+      <Project>{7ebf806d-a5a9-4171-a7a9-e428c99ed5f0}</Project>
+      <Name>GDriveApi_v2</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="FileStorage-721027ef5d82.p12" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\UploadFile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FileStorage-6817de257573.p12" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

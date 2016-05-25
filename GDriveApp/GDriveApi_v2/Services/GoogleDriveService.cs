@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dto.Models;
@@ -14,22 +13,17 @@ using Dto.Models.Drive;
 using GDriveApi.Mappers;
 using GDriveApi.Model;
 using Google.Apis.Auth.OAuth2;
-using Google.Apis.Drive.v3;
-using Google.Apis.Drive.v3.Data;
+using Google.Apis.Drive.v2;
 using Google.Apis.Services;
-using Google.Apis.Upload;
-using Google.Apis.Util.Store;
 using Newtonsoft.Json;
-using DriveData = Google.Apis.Drive.v3.Data;
+using DriveData = Google.Apis.Drive.v2.Data;
 
-namespace GDriveApi.Services
+namespace GDriveApi_v2.Services
 {
-    public static class GoogleDriveService
+    public static class GoogleDriveService_v2
     {
         private static string[] scopes = { DriveService.Scope.DriveFile };
         private static DriveService service;
-
-        private static AuthResponse OAuth2_Creds;
 
         #region private
         #endregion
@@ -94,15 +88,17 @@ namespace GDriveApi.Services
                 Environment.UserName,
                 CancellationToken.None).Result;
 
+
             var service = new DriveService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
                 ApplicationName = "Drive API Sample",
             });
+
         }
         #endregion
 
-        public static Task<FileList> GetFilesAsync()
+        public static Task<DriveData.FileList> GetFilesAsync()
         {
             FilesResource.ListRequest request = service.Files.List();
             return request.ExecuteAsync();
@@ -111,25 +107,26 @@ namespace GDriveApi.Services
         public static IEnumerable<FileModel> GetFiles(SearchFilter filter = null)
         {
             FilesResource.ListRequest request = service.Files.List();
-            request.PageSize = filter == null ? 20 : filter.PageSize;
+            request.MaxResults = filter == null ? 20 : filter.PageSize;
             request.Q = filter == null ? null : filter.Query;
             var list = request.Execute();
 
-            return list.Files.Select(Mapper.ToFileModel);
+            return list.Items.Select(Mapper.ToFileModel);
         }
 
-        public static void GetFile(string Id)
+        public static FileModel GetFile(string Id)
         {
             var request = service.Files.Get(Id);
             var file = request.Execute();
+            return Mapper.ToFileModel(file);
         }
 
         public static void UploadFile(Stream stream, string name)
         {
-            var insertRequest = service.Files.Create(
+            var insertRequest = service.Files.Insert(
                 new DriveData.File
                 {
-                    Name = name,
+                    Title = name,
                 },
                 stream,
                 "image/jpeg");
@@ -145,16 +142,19 @@ namespace GDriveApi.Services
         {
             MemoryStream stream = new MemoryStream(bytes);
 
-            var insertRequest = service.Files.Create(
+            var insertRequest = service.Files.Insert(
                 new DriveData.File
                 {
-                    Name = name,
+                    Title = name,
                 },
                 stream,
                 "image/jpeg");
 
-            var task = insertRequest.Upload();
-            stream.Dispose();
+            var task = insertRequest.UploadAsync();
+            task.ContinueWith(t =>
+            {
+                stream.Dispose();
+            });
         }
 
         public static bool Exist(string path)
@@ -167,13 +167,13 @@ namespace GDriveApi.Services
             DriveData.File newDirectory = null;
             DriveData.File body = new DriveData.File
             {
-                Name = name,
+                Title = name,
                 Description = description,
                 MimeType = "application/vnd.google-apps.folder"
             };
             try
             {
-                var request = service.Files.Create(body);
+                var request = service.Files.Insert(body);
                 newDirectory = request.Execute();
             }
             catch (Exception e)

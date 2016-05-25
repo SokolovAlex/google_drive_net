@@ -15,3 +15,14 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.file-card {
+    width: 150px;
+    height: 150px;
+    display: inline-block;
+}
+
+.file-card_title {
+    position: relative;
+    bottom: 0;
+}
