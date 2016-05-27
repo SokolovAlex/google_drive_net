@@ -30,18 +30,25 @@
                 <div class="btn btn-default" ng-click="main.refresh()">Refresh</div>
             </div>
 
+
             <div ng-repeat="file in main.files" class="file-card">
-                <img src="{{file.Thumbnail}}" alt="" class="img-thumbnail" />
-                <img src="{{file.IconLink}}" alt="" class="img-thumbnail" />
-                <div class="file-card_title"><b>Name: </b>{{file.Name}}</div>
-                <div class="file-card_title"><b>Type: </b>{{file.FileExtension}}</div>
+                <img src="{{file.Thumbnail}}" alt="" class="img-thumbnail"/>
+                <img src="{{file.IconLink}}" alt="" class="img-thumbnail"/>
+                <img src="{{file.WebViewLink}}" alt="" class="img-thumbnail"/>
+
+                <div class="file-card_title"><b>Name: </b>{{file.Name}}
+                </div>
+                <div class="file-card_title"><b>Type: </b>{{file.FileExtension}}
+                </div>
                 <div class="file-card_title">
                     <b>Description: </b>{{file.Description}}
                 </div>
-                <div class="file-card_title"><b>Parents: </b>{{file.Parents}}</div>
+                <div class="file-card_title"><b>Parents: </b>{{file.Parents}}
+                </div>
                 <div>
-                    <span class="glyphicon glyphicon-save file-card_icon" aria-hidden="true" download-link="{{file.DownloadUrl}}"></span>
-                    <span class="glyphicon glyphicon-trash file-card_icon" aria-hidden="true" file-id="{{file.Id}}" ng-click="main.deleteFile(file.Id)"></span>
+                    <span class="glyphicon glyphicon-trash file-card_icon" aria-hidden="true" ng-click="main.deleteFile(file.Id)"></span>
+                    <span class="glyphicon glyphicon-save file-card_icon" aria-hidden="true" ng-if="file.WebContentLink" ng-click="main.download(file)"></span>
+                    <span class="glyphicon glyphicon-share file-card_icon" aria-hidden="true" ng-click="main.share(file.Id)"></span>
                 </div>
             </div>
         </div>
@@ -52,6 +59,9 @@
         <div role="tabpanel" class="fade tab-pane" id="new_folder">
             @Html.Partial("NewFolder")
         </div>
+    </div>
+    <div>
+        <img src="https://drive.google.com/file/d/0B3wIS201K7UVdTNwQWhnT1g0QUE/view?usp=drivesdk" alt/>
     </div>
 </div>
 @section scripts{

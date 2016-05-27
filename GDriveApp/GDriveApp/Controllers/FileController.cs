@@ -125,6 +125,19 @@ namespace GDriveApp.Controllers
             //GoogleDriveService_v2.DeleteFile(id);
         }
 
+        [HttpGet, Route("api/download/{id}")]
+        public void Download(string id)
+        {
+            //GoogleDriveService_v2.CreateDirectory(req.folderName, req.folderDesc);
+        }
+
+        [HttpPost, Route("api/share/{id}")]
+        public void Share(string id)
+        {
+            //GoogleDriveService_v2.CreateDirectory(req.folderName, req.folderDesc);
+            GoogleDriveService.Share(id);
+        }
+
         [HttpPost, Route("api/folder")]
         public void CreateFolder(CreateFolderRequest req)
         {

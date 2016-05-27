@@ -161,10 +161,16 @@ namespace GDriveApi.Services
             return list.Files.Select(Mapper.ToFileModel);
         }
 
-        public static void GetFile(string Id)
+        private static DriveData.File GetFile(string id, string[] fields)
         {
-            var request = service.Files.Get(Id);
-            var file = request.Execute();
+            var request = service.Files.Get(id);
+            request.Fields = String.Join(",", fields);
+            return request.Execute();
+        }
+
+        private static DriveData.File GetFile(string id)
+        {
+            return GetFile(id, new string[]{});
         }
 
         public static void UploadFile(Stream stream, string name)
@@ -173,6 +179,7 @@ namespace GDriveApi.Services
                 new DriveData.File
                 {
                     Name = name,
+                    //Permissions = new List<Permission> { new Permission { Type = "anyone", Role = "reader", Domain = "http://localhost:26774/" } }
                 },
                 stream,
                 "image/jpeg");
@@ -182,12 +189,28 @@ namespace GDriveApi.Services
                 insertRequest.Body.Parents = new List<string> { selectedFolder };
             }
 
-            var task = insertRequest.UploadAsync();
-            task.ContinueWith(t =>
-            {
-                stream.Dispose();
-            });
+            //var task = insertRequest.UploadAsync();
+            //task.ContinueWith(t =>
+            //{
+            //    stream.Dispose();
+            //});
+
+            var task = insertRequest.Upload();
+            stream.Dispose();
         }
+
+        public static void Share(string id)
+        {
+            var req = service.Permissions.Create(new Permission
+            {
+                Type = "anyone",
+                Role = "writer",
+                AllowFileDiscovery = true,
+            }, id);
+            req.Fields = "id";
+            req.Execute();
+        }
+
 
         public static void UploadFile(byte[] bytes, string name)
         {

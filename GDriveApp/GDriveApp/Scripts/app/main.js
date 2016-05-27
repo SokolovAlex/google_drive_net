@@ -18,12 +18,19 @@
              ctrl.deleteFile = deleteFile;
              ctrl.createFolder = createFolder;
              ctrl.selectFolder = selectFolder;
+             ctrl.download = download;
+             ctrl.share = fileService.share;
 
              ctrl.newFolderName = '';
              ctrl.newFolderDesc = '';
              ctrl.selectedFolder = rootFolder;
 
              refresh();
+
+             function download(file) {
+                 //fileService.downloadFile(file.Id);
+                 window.open(file.WebContentLink);
+             }
 
              function selectFolder(folder) {
                  ctrl.selectedFolder = folder || rootFolder;

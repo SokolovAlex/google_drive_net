@@ -14,8 +14,14 @@
                 createFolder: function(data) {
                     return $http.post(window.config.urls.createFolder, data);
                 },
-                selectFolder: function (data) {
+                selectFolder: function(data) {
                     return $http.post(window.config.urls.createFolder, data);
+                },
+                downloadFile: function(id) {
+                    return $http.get(window.config.urls.download + '/' + id);
+                },
+                share: function (id) {
+                    return $http.post(window.config.urls.share + '/' + id);
                 }
             };
         }
