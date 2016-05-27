@@ -11,7 +11,8 @@ namespace GDriveApp
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/libs/jquery-{version}.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+            bundles.Add(new ScriptBundle("~/bundles/libs").Include(
+                       "~/Scripts/libs/lodash.js",
                        "~/Scripts/libs/angular.js",
                        "~/Scripts/libs/angular-upload-file.js"));
 

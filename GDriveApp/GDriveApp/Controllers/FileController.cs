@@ -11,26 +11,51 @@ using System.Web.Http;
 using Dto.Models;
 using GDriveApi.Services;
 using GDriveApi_v2.Services;
-using File = GDrive.Dal.dbEntities.File;
+using GDriveApp.Models.api.Requests;
+using GDriveApp.Models.api.Responses;
 
 namespace GDriveApp.Controllers
 {
     public class FileController : ApiController
     {
-        // GET api/values
-        [Route("api/files")]
+        [HttpGet, Route("api/files")]
         public HttpResponseMessage Get()
         {
-            var mappedPath = System.Web.Hosting.HostingEnvironment.MapPath("~/FileStorage-6817de257573.p12");
-            GoogleDriveService.Authenticate(mappedPath);
+            var keyPath = System.Web.Hosting.HostingEnvironment.MapPath("~/FileStorage-6817de257573.p12");
+            GoogleDriveService.Authenticate(keyPath);
 
-            GoogleDriveService_v2.Authenticate(mappedPath);
+            var files_v3 = GoogleDriveService.GetRootFiles();
 
-            var files_v3 = GoogleDriveService.GetFiles();
+            //GoogleDriveService_v2.Authenticate(keyPath);
+            //var files_v2 = GoogleDriveService_v2.GetFiles();
 
-            var files_v2 = GoogleDriveService_v2.GetFiles();
+            var folders = GoogleDriveService.GetFolders(files_v3);
 
-            return Request.CreateResponse(HttpStatusCode.OK, files_v2);
+            GoogleDriveService.MemorySelectedFolder(null);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new FilesResponse
+            {
+                files = files_v3,
+                folders = folders
+            });
+        }
+
+        [HttpGet, Route("api/files/{parent}")]
+        public HttpResponseMessage GetIn(string parent)
+        {
+            var keyPath = System.Web.Hosting.HostingEnvironment.MapPath("~/FileStorage-6817de257573.p12");
+            GoogleDriveService.Authenticate(keyPath);
+
+            var files_v3 = GoogleDriveService.GetFilesIn(parent);
+            var folders = GoogleDriveService.GetFolders(files_v3);
+
+            GoogleDriveService.MemorySelectedFolder(parent);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new FilesResponse
+            {
+                files = files_v3,
+                folders = folders
+            });
         }
 
         [HttpPost, Route("api/upload/save")]
@@ -70,14 +95,11 @@ namespace GDriveApp.Controllers
             {
                 var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
                 var stream = await file.ReadAsStreamAsync();
-                var bytes = await file.ReadAsByteArrayAsync();
-
-                GoogleDriveService.UploadFile2(bytes, filename);
+                GoogleDriveService.UploadFile(stream, filename);
             }
 
             return Ok();
         }
-
 
         [Route("api/upload2")]
         [HttpPost]
@@ -96,14 +118,18 @@ namespace GDriveApp.Controllers
             return "uploaded";
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        [HttpDelete, Route("api/file/{id}")]
+        public void Delete(string id)
         {
+            GoogleDriveService.DeleteFile(id);
+            //GoogleDriveService_v2.DeleteFile(id);
         }
 
-        // DELETE api/values/5
-        public void Delete(int id)
+        [HttpPost, Route("api/folder")]
+        public void CreateFolder(CreateFolderRequest req)
         {
+            //GoogleDriveService_v2.CreateDirectory(req.folderName, req.folderDesc);
+            GoogleDriveService.CreateDirectory(req.folderName, req.folderDesc, req.parentId);
         }
     }
 }

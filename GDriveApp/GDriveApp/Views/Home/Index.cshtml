@@ -1,6 +1,18 @@
 ﻿<div class="jumbotron" ng-controller='mainCtrl as main'>
+    <div>
+        <div class="btn btn-default">
+            <a href="@Url.Action("GoogleRedirect")"> OAuth2 </a>
+        </div>
 
-    <div class="btn btn-default"><a href="@Url.Action("GoogleRedirect")"> OAuth2 </a></div>
+        <div class="btn-group" ng-if='main.inited'>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{{main.selectedFolder.Name}}<span class="caret"></span></button>
+
+            <ul class="dropdown-menu">
+                <li ng-click="main.selectFolder()"><a href="#">Root</a></li>
+                <li ng-repeat="folder in main.folders" ng-click="main.selectFolder(folder)"><a href="#">{{folder.Name}}</a></li>
+            </ul>
+        </div>
+    </div>
 
     <div>User: @ViewBag.User</div>
 
@@ -8,18 +20,37 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
         <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload</a></li>
+        <li role="presentation"><a href="#new_folder" aria-controls="new_folder" role="tab" data-toggle="tab">New Folder</a></li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <div role="tabpanel" class="fade tab-pane in active" id="files">
+        <div role="tabpanel" class="fade tab-pane in active" id="files" ng-if='main.inited'>
+            <div>
+                <div class="btn btn-default" ng-click="main.refresh()">Refresh</div>
+            </div>
+
             <div ng-repeat="file in main.files" class="file-card">
-                <img src="{{file.Icon}}" alt="" class="img-thumbnail" />
-                <div class="file-card_title">{{file.Name}}</div>
+                <img src="{{file.Thumbnail}}" alt="" class="img-thumbnail" />
+                <img src="{{file.IconLink}}" alt="" class="img-thumbnail" />
+                <div class="file-card_title"><b>Name: </b>{{file.Name}}</div>
+                <div class="file-card_title"><b>Type: </b>{{file.FileExtension}}</div>
+                <div class="file-card_title">
+                    <b>Description: </b>{{file.Description}}
+                </div>
+                <div class="file-card_title"><b>Parents: </b>{{file.Parents}}</div>
+                <div>
+                    <span class="glyphicon glyphicon-save file-card_icon" aria-hidden="true" download-link="{{file.DownloadUrl}}"></span>
+                    <span class="glyphicon glyphicon-trash file-card_icon" aria-hidden="true" file-id="{{file.Id}}" ng-click="main.deleteFile(file.Id)"></span>
+                </div>
             </div>
         </div>
         <div role="tabpanel" class="fade tab-pane" id="upload">
             @Html.Partial("UploadFile")
+        </div>
+
+        <div role="tabpanel" class="fade tab-pane" id="new_folder">
+            @Html.Partial("NewFolder")
         </div>
     </div>
 </div>

@@ -17,12 +17,21 @@ textarea {
 }
 
 .file-card {
+    border: grey;
+    border-radius: 2px;
     width: 150px;
     height: 150px;
     display: inline-block;
+    font-size: 10px;
+    margin: 2px;
 }
 
 .file-card_title {
     position: relative;
     bottom: 0;
+}
+
+.file-card_icon {
+    cursor: pointer;
+    font-size: 16px;
 }

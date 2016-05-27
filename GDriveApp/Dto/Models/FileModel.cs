@@ -20,5 +20,14 @@ namespace Dto.Models
 
         public string Thumbnail { get; set; }
         public string Description { get; set; }
+
+        public string WebContentLink { get; set; }
+        public string MimeType { get; set; }
+
+        public string WebViewLink { get; set; }
+        public string SelfLink { get; set; }
+        public string DownloadUrl { get; set; }
+
+        public IEnumerable<string> Parents { get; set; }
     }
 }

@@ -29,6 +29,12 @@ namespace GDriveApi.Services
         private static string[] scopes = { DriveService.Scope.DriveFile };
         private static DriveService service;
 
+        private static string rootFolderId;
+
+        private static string selectedFolder { get; set; }
+
+        private static readonly string folderMimeType = "application/vnd.google-apps.folder";
+
         private static AuthResponse OAuth2_Creds;
 
         #region private
@@ -108,11 +114,48 @@ namespace GDriveApi.Services
             return request.ExecuteAsync();
         }
 
+        public static IEnumerable<FileModel> GetFolders()
+        {
+            return GetFiles(new SearchFilter
+            {
+                Query = String.Format("mimeType='{0}'", folderMimeType)
+            });
+        }
+
+        public static IEnumerable<FileModel> GetFolders(IEnumerable<FileModel> files)
+        {
+            return files.Where(x => x.MimeType == folderMimeType);
+        }
+
+        public static IEnumerable<FileModel> GetRootFiles(SearchFilter filter = null)
+        {
+            return GetFiles(new SearchFilter
+            {
+                Query = "'root' in parents"
+            });
+        }
+
+        public static void MemorySelectedFolder(string parent)
+        {
+            selectedFolder = parent;
+        }
+
+        public static IEnumerable<FileModel> GetFilesIn(string parent)
+        {
+            return GetFiles(new SearchFilter
+            {
+                Query = String.Format("'{0}' in parents", parent)
+            });
+        }
+
         public static IEnumerable<FileModel> GetFiles(SearchFilter filter = null)
         {
             FilesResource.ListRequest request = service.Files.List();
             request.PageSize = filter == null ? 20 : filter.PageSize;
             request.Q = filter == null ? null : filter.Query;
+
+            request.Fields = "files";
+
             var list = request.Execute();
 
             return list.Files.Select(Mapper.ToFileModel);
@@ -134,6 +177,11 @@ namespace GDriveApi.Services
                 stream,
                 "image/jpeg");
 
+            if (selectedFolder != null)
+            {
+                insertRequest.Body.Parents = new List<string> { selectedFolder };
+            }
+
             var task = insertRequest.UploadAsync();
             task.ContinueWith(t =>
             {
@@ -141,7 +189,7 @@ namespace GDriveApi.Services
             });
         }
 
-        public static void UploadFile2(byte[] bytes, string name)
+        public static void UploadFile(byte[] bytes, string name)
         {
             MemoryStream stream = new MemoryStream(bytes);
 
@@ -162,14 +210,15 @@ namespace GDriveApi.Services
             return true;
         }
 
-        public static FolderModel CreateDirectory(string name, string description)
+        public static FolderModel CreateDirectory(string name, string description, string parentId)
         {
             DriveData.File newDirectory = null;
             DriveData.File body = new DriveData.File
             {
                 Name = name,
                 Description = description,
-                MimeType = "application/vnd.google-apps.folder"
+                MimeType = folderMimeType,
+                Parents = new List<string> { parentId }
             };
             try
             {
@@ -183,5 +232,20 @@ namespace GDriveApi.Services
 
             return Mapper.ToFolderModel(newDirectory);
         }
+
+        public static void DeleteFile(string id)
+        {
+            var req = service.Files.Delete(id);
+            req.Execute();
+        }
+
+        #region async
+
+        public static async void DeleteFileAsync(string id)
+        {
+            var req = service.Files.Delete(id);
+            await req.ExecuteAsync();
+        }
+        #endregion
     }
 }

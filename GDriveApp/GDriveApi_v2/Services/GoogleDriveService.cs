@@ -10,8 +10,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dto.Models;
 using Dto.Models.Drive;
-using GDriveApi.Mappers;
 using GDriveApi.Model;
+using GDriveApi_v2.Mappers;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Drive.v2;
 using Google.Apis.Services;
@@ -114,9 +114,9 @@ namespace GDriveApi_v2.Services
             return list.Items.Select(Mapper.ToFileModel);
         }
 
-        public static FileModel GetFile(string Id)
+        public static FileModel GetFile(string id)
         {
-            var request = service.Files.Get(Id);
+            var request = service.Files.Get(id);
             var file = request.Execute();
             return Mapper.ToFileModel(file);
         }
@@ -138,7 +138,7 @@ namespace GDriveApi_v2.Services
             });
         }
 
-        public static void UploadFile2(byte[] bytes, string name)
+        public static void UploadFile(byte[] bytes, string name)
         {
             MemoryStream stream = new MemoryStream(bytes);
 
@@ -183,5 +183,20 @@ namespace GDriveApi_v2.Services
 
             return Mapper.ToFolderModel(newDirectory);
         }
+
+        public static  void DeleteFile(string id)
+        {
+            var req = service.Files.Delete(id);
+            req.Execute();
+        }
+
+        #region async 
+
+        public static async void DeleteFileAsync(string id)
+        {
+            var req = service.Files.Delete(id);
+            await req.ExecuteAsync();
+        }
+        #endregion
     }
 }

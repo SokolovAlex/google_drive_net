@@ -19,7 +19,11 @@ namespace GDriveApi.Mappers
                 IconLink = file.IconLink,
                 FileExtension = file.FileExtension,
                 Shared = file.Shared,
-                Thumbnail = file.ThumbnailLink
+                Thumbnail = file.ThumbnailLink,
+                WebContentLink = file.WebContentLink,
+                WebViewLink = file.WebViewLink,
+                MimeType = file.MimeType,
+                Parents = file.Parents
             };
         }
 
@@ -28,10 +32,15 @@ namespace GDriveApi.Mappers
             return new FolderModel
             {
                 Name = file.Name,
+                Id = file.Id,
                 IconLink = file.IconLink,
                 FileExtension = file.FileExtension,
                 Shared = file.Shared,
-                Thumbnail = file.ThumbnailLink
+                Thumbnail = file.ThumbnailLink,
+                WebContentLink = file.WebContentLink,
+                WebViewLink = file.WebViewLink,
+                MimeType = file.MimeType,
+                Parents = file.Parents
             };
         }
     }

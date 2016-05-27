@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dto.Models;
+﻿using Dto.Models;
 using Google.Apis.Drive.v2.Data;
 
-namespace GDriveApi.Mappers
+namespace GDriveApi_v2.Mappers
 {
     public static class Mapper
     {
@@ -19,7 +14,10 @@ namespace GDriveApi.Mappers
                 IconLink = file.IconLink,
                 FileExtension = file.FileExtension,
                 Shared = file.Shared,
-                Thumbnail = file.ThumbnailLink
+                Thumbnail = file.ThumbnailLink,
+                SelfLink = file.SelfLink,
+                WebContentLink = file.WebContentLink,
+                DownloadUrl = file.DownloadUrl
             };
         }
 
@@ -27,11 +25,15 @@ namespace GDriveApi.Mappers
         {
             return new FolderModel
             {
+                Id = file.Id,
                 Name = file.Title,
                 IconLink = file.IconLink,
                 FileExtension = file.FileExtension,
                 Shared = file.Shared,
-                Thumbnail = file.ThumbnailLink
+                Thumbnail = file.ThumbnailLink,
+                SelfLink = file.FileExtension,
+                WebContentLink = file.WebContentLink,
+                DownloadUrl = file.DownloadUrl
             };
         }
     }
