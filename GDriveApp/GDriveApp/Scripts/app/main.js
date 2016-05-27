@@ -43,7 +43,23 @@
                      console.log('refresh --> ', response);
                      ctrl.files = response.data.files;
                      ctrl.folders = response.data.folders;
+                     ctrl.gallery = prepareGallery(ctrl.files);
                      ctrl.inited = true;
+                 });
+             }
+
+             function prepareGallery(files) {
+                 var images = _.filter(files, function(item) {
+                     return item.MimeType.indexOf('image') !== -1;
+                 });
+                 return _.map(images, function (file, i) {
+                     return {
+                         num: i,
+                         className: i === 0 ? 'active' : '',
+                         name: file.Name,
+                         src: file.Thumbnail
+                        // src: file.WebViewLink
+                    };
                  });
              }
 

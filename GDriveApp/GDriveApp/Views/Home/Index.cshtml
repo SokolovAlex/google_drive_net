@@ -21,6 +21,7 @@
         <li role="presentation" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
         <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload</a></li>
         <li role="presentation"><a href="#new_folder" aria-controls="new_folder" role="tab" data-toggle="tab">New Folder</a></li>
+        <li role="presentation"><a href="#gallery" aria-controls="new_folder" role="tab" data-toggle="tab">Gallery</a></li>
     </ul>
 
     <!-- Tab panes -->
@@ -59,10 +60,14 @@
         <div role="tabpanel" class="fade tab-pane" id="new_folder">
             @Html.Partial("NewFolder")
         </div>
+
+        <div role="tabpanel" class="fade tab-pane" id="gallery">
+            @Html.Partial("Gallery")
+        </div>
     </div>
-    <div>
+    @*<div>
         <img src="https://drive.google.com/file/d/0B3wIS201K7UVdTNwQWhnT1g0QUE/view?usp=drivesdk" alt/>
-    </div>
+    </div>*@
 </div>
 @section scripts{
     @Scripts.Render("~/bundles/js");
