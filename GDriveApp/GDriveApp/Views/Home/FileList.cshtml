@@ -1,0 +1,26 @@
+﻿<div>
+    <div class="btn btn-default" ng-click="main.refresh()">Refresh</div>
+</div>
+
+<div ng-repeat="file in main.files" class="file-card">
+    <img ng-src="{{file.Thumbnail}}" alt="" class="img-thumbnail" />
+    <img ng-src="{{file.IconLink}}" alt="" class="img-thumbnail" />
+
+    <div class="file-card_title">
+        <b>Name: </b>{{file.Name}}
+    </div>
+    <div class="file-card_title">
+        <b>Type: </b>{{file.FileExtension}}
+    </div>
+    <div class="file-card_title">
+        <b>Description: </b>{{file.Description}}
+    </div>
+    <div class="file-card_title">
+        <b>Parents: </b>{{file.Parents}}
+    </div>
+    <div>
+        <span class="glyphicon glyphicon-trash file-card_icon" aria-hidden="true" ng-click="main.deleteFile(file.Id)"></span>
+        <span class="glyphicon glyphicon-save file-card_icon" aria-hidden="true" ng-if="file.WebContentLink" ng-click="main.download(file)"></span>
+        <span class="glyphicon glyphicon-share file-card_icon" aria-hidden="true" ng-click="main.share(file.Id)"></span>
+    </div>
+</div>

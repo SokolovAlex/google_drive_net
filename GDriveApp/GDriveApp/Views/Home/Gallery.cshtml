@@ -14,7 +14,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
         <div ng-repeat="item in main.gallery" class="item" ng-class="item.className" style="margin: auto; width: 60%;">
-            <img src="{{item.src}}" alt="" style="height: 600px;">
+            <img ng-src="{{item.src}}" alt="" style="height: 600px;">
             <div class="carousel-caption">
                 {{item.name}}
             </div>

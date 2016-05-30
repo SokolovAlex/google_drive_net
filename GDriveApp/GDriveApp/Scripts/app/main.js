@@ -28,7 +28,6 @@
              refresh();
 
              function download(file) {
-                 //fileService.downloadFile(file.Id);
                  window.open(file.WebContentLink);
              }
 
@@ -63,11 +62,12 @@
              }
 
              function createFolder() {
+                 if (!ctrl.newFolderName) return;
                  var data = {
                      folderName: ctrl.newFolderName,
                      folderDesc: ctrl.newFolderDesc,
                      parentId: ctrl.selectedFolder.Id
-                 }
+                 };
                  fileService.createFolder(data).then(function() {
                      ctrl.newFolderName = "";
                      ctrl.newFolderDesc = "";
