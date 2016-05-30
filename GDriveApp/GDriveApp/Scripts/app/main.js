@@ -57,10 +57,7 @@
                          num: i,
                          className: i === 0 ? 'active' : '',
                          name: file.Name,
-                         src2: file.Thumbnail,
-                         src3: "https://drive.google.com/file/d/" + file.Id + "/view?usp=sharing",
-                         src: " https://drive.google.com/a/magora.systems/file/d/" + file.Id + "/view",
-                         src4: file.WebViewLink
+                         src: file.WebContentLink
                     };
                  });
              }
