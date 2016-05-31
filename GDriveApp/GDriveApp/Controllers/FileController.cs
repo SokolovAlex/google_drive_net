@@ -42,7 +42,7 @@ namespace GDriveApp.Controllers
         {
             GoogleDriveService.MemorySelectedFolder(parent);
 
-            var files = GoogleDriveService.GetFilesIn(parent);
+            var files = GoogleDriveService.GetFiles(parent);
             var folders = GoogleDriveService.RetainFolders(files);
 
             return Request.CreateResponse(HttpStatusCode.OK, new FilesResponse
@@ -111,6 +111,18 @@ namespace GDriveApp.Controllers
         public void CreateFolder(CreateFolderRequest req)
         {
             GoogleDriveService.CreateFolder(req.folderName, req.folderDesc, req.parentId);
+        }
+
+        [HttpGet, Route("api/folder")]
+        public void GetFolders()
+        {
+            GoogleDriveService.GetFolders();
+        }
+
+        [HttpGet, Route("api/folder/{parent}")]
+        public void GetFolders(string parent)
+        {
+            GoogleDriveService.GetFolders(parent);
         }
     }
 }

@@ -172,6 +172,14 @@ namespace GDriveApi.Services
             });
         }
 
+        public static IEnumerable<FileModel> GetFolders(string parent)
+        {
+            return GetFiles(new SearchFilter
+            {
+                Query = String.Format("mimeType='{0}' and '{1}' in parents", folderMimeType, parent)
+            });
+        }
+
         public static IEnumerable<FileModel> RetainFolders(IEnumerable<FileModel> files)
         {
             return files.Where(x => x.MimeType == folderMimeType);
@@ -180,7 +188,7 @@ namespace GDriveApi.Services
         #endregion
 
         #region get
-        public static IEnumerable<FileModel> GetRootFiles(SearchFilter filter = null)
+        public static IEnumerable<FileModel> GetRootFiles()
         {
             return GetFiles(new SearchFilter
             {
@@ -188,7 +196,7 @@ namespace GDriveApi.Services
             });
         }
 
-        public static IEnumerable<FileModel> GetFilesIn(string parent)
+        public static IEnumerable<FileModel> GetFiles(string parent)
         {
             return GetFiles(new SearchFilter
             {

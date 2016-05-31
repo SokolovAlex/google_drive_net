@@ -10,13 +10,10 @@ namespace Dto.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Url { get; set; }
 
         public string IconLink { get; set; }
-        public string SharingUser { get; set; }
 
         public string FileExtension { get; set; }
-        public bool? Shared { get; set; }
 
         public string Thumbnail { get; set; }
         public string Description { get; set; }
@@ -25,8 +22,6 @@ namespace Dto.Models
         public string MimeType { get; set; }
 
         public string WebViewLink { get; set; }
-        public string SelfLink { get; set; }
-        public string DownloadUrl { get; set; }
 
         public IEnumerable<string> Parents { get; set; }
     }
