@@ -8,14 +8,14 @@ Simple web apllication to wrap & test net google drive client <i class="icon-pro
 Table of Contents
 =================
 
-  * [Quick start](#Quick-start)
-  * [Authenticate](#Authenticate)
-  * [Api](#Api)
-  * [Static public interfaces](#Static-public-interfaces)
-	  * [Addicted Models](##Addicted-Models)
-  * [Advance Search](#Advance-Search)
-  * [Testing UI](#Testing-UI)
-  * [Usefull links](#Usefull-links)
+  * [Quick start](#quick-start)
+  * [Authenticate](#authenticate)
+  * [Api](#api)
+  * [Static public interfaces](#static-public-interfaces)
+	  * [Addicted Models](#addicted-models)
+  * [Advance Search](#advance-mearch)
+  * [Testing UI](#testing-ui)
+  * [Usefull links](#usefull-links)
 
 
 # Quick start
