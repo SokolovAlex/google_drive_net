@@ -19,9 +19,10 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-        <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload</a></li>
-        <li role="presentation"><a href="#new_folder" aria-controls="new_folder" role="tab" data-toggle="tab">New Folder</a></li>
         <li role="presentation"><a href="#gallery" aria-controls="new_folder" role="tab" data-toggle="tab">Gallery</a></li>
+        <li role="presentation"><a href="#new_folder" aria-controls="new_folder" role="tab" data-toggle="tab">New Folder</a></li>
+        <li role="presentation"><a href="#upload" aria-controls="upload" role="tab" data-toggle="tab">Upload</a></li>
+        <li role="presentation"><a href="#upload_simple" aria-controls="upload" role="tab" data-toggle="tab">Upload Simple</a></li>
     </ul>
 
     <!-- Tab panes -->
@@ -29,19 +30,25 @@
         <div role="tabpanel" class="fade tab-pane in active" id="files" ng-if='main.inited'>
             @Html.Partial("FileList")
         </div>
-        <div role="tabpanel" class="fade tab-pane" id="upload">
-            @Html.Partial("UploadFile")
+
+        <div role="tabpanel" class="fade tab-pane" id="gallery">
+            @Html.Partial("Gallery")
         </div>
 
         <div role="tabpanel" class="fade tab-pane" id="new_folder">
             @Html.Partial("NewFolder")
         </div>
 
-        <div role="tabpanel" class="fade tab-pane" id="gallery">
-            @Html.Partial("Gallery")
+        <div role="tabpanel" class="fade tab-pane" id="upload">
+            @Html.Partial("UploadFile")
+        </div>
+
+        <div role="tabpanel" class="fade tab-pane" id="upload_simple">
+            @Html.Partial("UploadFileSimple")
         </div>
     </div>
 </div>
+
 @section scripts{
     @Scripts.Render("~/bundles/js");
 }

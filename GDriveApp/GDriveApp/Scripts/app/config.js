@@ -5,6 +5,7 @@
         remove: '/api/file',
         createFolder: '/api/folder',
         download: '/api/download',
-        share: '/api/share'
+        share: '/api/share',
+        uploadSimple: '/api/upload2'
     }
 };

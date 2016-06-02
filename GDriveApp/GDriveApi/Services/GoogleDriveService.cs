@@ -59,39 +59,16 @@ namespace GDriveApi.Services
             return GetFile(id, new string[] { });
         }
 
-        private static void Upload(Stream stream, string name, bool shared = true)
+        private static void UploadAsync(Stream stream, string name, string parent = null, bool shared = true)
         {
             var file = new DriveData.File
             {
                 Name = name
             };
-            if (selectedFolder != null)
+            if (parent != null)
             {
-                file.Parents = new List<string> { selectedFolder };
+                file.Parents = new List<string> { parent };
             }
-
-            var uploadRequest = service.Files.Create(file, stream, "image/jpeg");
-            uploadRequest.Fields = "id";
-            var task = uploadRequest.UploadAsync();
-
-           task.ContinueWith(t =>
-            {
-                stream.Dispose();
-                if (shared)
-                {
-                    Share(uploadRequest.ResponseBody.Id);
-                }
-            });
-        }
-
-        private static void Upload(byte[] bytes, string name, bool shared = true)
-        {
-            MemoryStream stream = new MemoryStream(bytes);
-
-            var file = new DriveData.File
-            {
-                Name = name
-            };
 
             var uploadRequest = service.Files.Create(file, stream, "image/jpeg");
             uploadRequest.Fields = "id";
@@ -105,6 +82,33 @@ namespace GDriveApi.Services
                     Share(uploadRequest.ResponseBody.Id);
                 }
             });
+        }
+
+        private static void Upload(Stream stream, string name, string parent = null, bool shared = true)
+        {
+            var file = new DriveData.File
+            {
+                Name = name
+            };
+            if (parent != null)
+            {
+                file.Parents = new List<string> { parent };
+            }
+
+            var uploadRequest = service.Files.Create(file, stream, "image/jpeg");
+            uploadRequest.Fields = "id";
+            uploadRequest.Upload();
+            stream.Dispose();
+            if (shared)
+            {
+                Share(uploadRequest.ResponseBody.Id);
+            }
+        }
+
+        private static void Upload(byte[] bytes, string name, string parent = null, bool shared = true)
+        {
+            MemoryStream stream = new MemoryStream(bytes);
+            Upload(stream, name, parent, shared);
         }
         #endregion
 
@@ -231,25 +235,44 @@ namespace GDriveApi.Services
         #endregion
 
         #region upload
+        public static void UploadSharedFileIn(Stream stream, string name, string parent = null)
+        {
+            Upload(stream, name, parent);
+        }
+
+        public static void UploadSharedFileIn(byte[] bytes, string name, string parent = null)
+        {
+            Upload(bytes, name, parent);
+        }
+
+        public static void UploadFileIn(Stream stream, string name, string parent = null)
+        {
+            Upload(stream, name, parent, false);
+        }
+
+        public static void UploadFileIn(byte[] bytes, string name, string parent = null)
+        {
+            Upload(bytes, name, parent, false);
+        }
 
         public static void UploadSharedFile(Stream stream, string name)
         {
-            Upload(stream, name);
+            Upload(stream, name, selectedFolder);
         }
 
         public static void UploadSharedFile(byte[] bytes, string name)
         {
-            Upload(bytes, name);
+            Upload(bytes, name, selectedFolder);
         }
 
         public static void UploadFile(Stream stream, string name)
         {
-            Upload(stream, name, false);
+            Upload(stream, name, selectedFolder, false);
         }
 
         public static void UploadFile(byte[] bytes, string name)
         {
-            Upload(bytes, name, false);
+            Upload(bytes, name, selectedFolder, false);
         }
 
         #endregion

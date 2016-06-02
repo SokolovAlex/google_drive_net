@@ -20,6 +20,7 @@
              ctrl.selectFolder = selectFolder;
              ctrl.download = download;
              ctrl.share = fileService.share;
+             ctrl.uploadFileSimple = uploadFileSimple;
 
              ctrl.newFolderName = '';
              ctrl.newFolderDesc = '';
@@ -29,6 +30,16 @@
 
              function download(file) {
                  window.open(file.WebContentLink);
+             }
+
+             function uploadFileSimple() {
+                 var parent = ctrl.selectedFolder.Id || null;
+                 var file = document.getElementById('simplefile').files[0];
+                 fileService.uploadFileSimple(file, parent)
+                     .then(function () {
+                         document.getElementById('simplefile').value = "";
+                         refresh();
+                     });
              }
 
              function selectFolder(folder) {

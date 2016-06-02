@@ -95,6 +95,27 @@ namespace GDriveApp.Controllers
             return Ok();
         }
 
+        [HttpPost, Route("api/upload2")]
+        public async Task<IHttpActionResult> UploadSimple()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+
+            var parent = HttpContext.Current.Request.Headers["parent"];
+
+            var provider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(provider);
+
+            foreach (var file_ in provider.Contents)
+            {
+                var filename = file_.Headers.ContentDisposition.FileName.Trim('\"');
+                var stream = await file_.ReadAsStreamAsync();
+                GoogleDriveService.UploadSharedFileIn(stream, filename, parent);
+            }
+
+            return Ok();
+        }
+
         [HttpDelete, Route("api/file/{id}")]
         public void Delete(string id)
         {

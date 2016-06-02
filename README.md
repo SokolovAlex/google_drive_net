@@ -81,10 +81,11 @@ There are realized some web api methods:
 | api/files/{parent}      | GET |   Get files in determined folder |
 | api/upload/save | POST | Save file on upload folder |
 | api/upload| POST  |  Save file on google disk and share it to anyone|
+| api/upload2| POST  |  Save file on google disk and share it to anyone in determined folder (header: {parent: id})|
 | api/file/{id} | DELETE | Delete file from Google disk |
 | api/share/{id} | POST | Share file to anyone |
 | api/folder | POST | Get root folders only |
-| api/folder/{parent} | GET | Get root folders only in determinated folder |
+| api/folder/{parent} | GET | Get root folders only in determined folder |
 | api/folder | GET | Create new folder |
 
 
@@ -104,6 +105,10 @@ Public methods in GDriveApi.Services.GoogleDriveService:
 | GetFilesAsync | SearchFilter |  Task[FileList] | Get all files parent folder async |
 | GetFiles | SearchFilter | IEnumerable[FileModel] | Create new folder |
 | MemorySelectedFolder| string| void | save selected folder in static field to work with after |
+| UploadSharedFileIn| stream, string, string| void | upload file to google drive from stream  in determined folder and set permissions for anyone |
+| UploadSharedFileIn| bytes[], string, string| void | upload file to google drive from stream  in determined folder and set permissions for anyone |
+| UploadFileIn| stream, string, string| void | upload file to google drive from stream in determined folder |
+| UploadFileIn| bytes[], string, string| void | upload file to google drive from stream in determined folder |
 | UploadSharedFile| stream, string| void | upload file to google drive from stream and set permissions for anyone  |
 | UploadSharedFile| byte[], string| void | upload file to google drive from bytes and set permissions for anyone |
 | UploadFile| stream, string| void | upload file to google drive from stream |

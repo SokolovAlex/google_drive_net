@@ -8,6 +8,23 @@
                     url = parent ? url + '/' + parent : url;
                     return $http.get(url);
                 },
+
+                uploadFileSimple: function (file, parent) {
+                    var fd = new FormData();
+                    fd.append('file', file);
+
+                    var headers = { 'Content-Type': undefined };
+
+                    if (parent) {
+                        headers.parent = parent;
+                    }
+
+                    return $http.post(window.config.urls.uploadSimple, fd, {
+                        transformRequest: angular.identity,
+                        headers: headers
+                    });
+                },
+
                 deleteFile: function(id) {
                     return $http.delete(window.config.urls.remove + '/' + id);
                 },
